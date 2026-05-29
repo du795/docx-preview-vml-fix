@@ -5,5 +5,7 @@ bin
 obj
 docx.js.map
 /*.json
+!/package.json
+!/package-lock.json
 /*.config
 *.log
