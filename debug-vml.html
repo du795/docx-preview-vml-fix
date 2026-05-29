@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VML 调试页</title>
+    <script src="node_modules/jszip/dist/jszip.js"></script>
+    <script src="dist/docx-preview.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background: #d7d7d7;
+        }
+
+        #app {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        const container = document.getElementById("app");
+
+        const showDebugInfo = () => {
+            const stampSvg = container.querySelector("svg");
+            const stampRect = stampSvg?.getBoundingClientRect();
+
+            if (!stampRect)
+                return;
+
+            const info = document.createElement("pre");
+            info.id = "debug-info";
+            info.textContent = JSON.stringify({
+                x: stampRect.x,
+                y: stampRect.y,
+                width: stampRect.width,
+                height: stampRect.height
+            }, null, 2);
+            document.body.appendChild(info);
+        };
+
+        fetch("tmp-stamp.docx")
+            .then(response => response.blob())
+            .then(blob => docx.renderAsync(blob, container, null, {
+                experimental: true,
+                debug: true,
+                hideWrapperOnPrint: true
+            }))
+            .then(() => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(showDebugInfo);
+                });
+            });
+    </script>
+</body>
+</html>
