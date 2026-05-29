@@ -1,1 +1,1 @@
-此为docx-preview二改，原项目地址为
+此为docx-preview二改，原项目地址为:https://github.com/VolodymyrBaydalka/docxjs.git
